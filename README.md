@@ -1,14 +1,122 @@
-# 学术论文 Markdown 写作套件
+# Markdown Paper Kit
 
-> 用 MarkText 写 Markdown 初稿，一键导出 LaTeX（送 TeXPage 排版）和 Word（交导师），
-> Git 只管初稿、不管产物，双机靠 OneDrive 同步，**不需要任何远程仓库**。
+**English** | [中文](#中文)
 
-一套给**中文科研工作者**准备的写作脚手架：Markdown 初稿 → Pandoc → LaTeX / Word。
-重点是**轻量**和**能用**——不引入 LaTeX 本地编译、不引入 Git LFS、不要求你懂 Git 分支。
+A lightweight writing stack for academic papers: write Markdown in MarkText, export LaTeX (for TeXPage) and Word (for your advisor) with one command, and track drafts with Git — no LaTeX installation, no Git LFS, no remote server required.
+
+一套给科研工作者准备的论文写作脚手架：MarkText 写 Markdown 初稿，一条命令导出 LaTeX 和 Word，Git 只管初稿不管产物。**不需要本地装 LaTeX，不需要 Git LFS，不需要任何远程仓库。**
 
 ---
 
-## 它解决什么
+## English
+
+### What it solves
+
+| Pain | How this kit handles it |
+|---|---|
+| After ten Word revisions you can't find "the version I sent to my advisor" | Markdown + Git: every commit is reviewable, diffable, revertible |
+| Images pasted into Markdown vanish once converted to Word | Images live in `manuscript/figures/`, referenced with relative paths |
+| Reference style must be redone for every journal | Switch journals with one argument; CSL applied automatically |
+| Two machines (Windows/macOS) drift apart | OneDrive sync + a "write on one machine at a time" rule |
+| Long pandoc invocations nobody remembers | `bash build.sh` → three output files |
+
+**What it does not do**: write your paper, manage references (use Zotero), or typeset the PDF (use TeXPage or Word).
+
+### Quick start
+
+```bash
+# 1. Copy the template to your cloud drive as _template
+cp -R template ~/OneDrive/_template
+
+# 2. Generate your first paper
+cd ~/OneDrive/_template
+bash new-paper.sh ../paper-1
+
+# 3. Write, then export
+cd ../paper-1
+bash build.sh     # → export/paper.tex  export/paper.docx  export/si.docx
+```
+
+On Windows use `.\new-paper.ps1` and `.\build.ps1`.
+
+Prefer no terminal? Copy `template/` to `paper-1`, then run
+`git init -b main && git add -A && git commit -m "init"` once, and add the folder
+in GitHub Desktop via `File → Add local repository`.
+
+### Structure
+
+```
+paper-1/                    one paper = one repository
+├── manuscript/             the draft (tracked by Git)
+│   ├── 00-front.md         Highlights + Abstract + Keywords
+│   ├── 01-intro.md         Introduction
+│   ├── 02-methods.md       Materials and Methods
+│   ├── 03-results.md       Results and Discussion
+│   ├── 04-conclusion.md    Conclusions
+│   ├── 05-backmatter.md    CRediT / Acknowledgments / Declaration
+│   ├── 90-si.md            Supporting Information (exported separately)
+│   └── refs.bib
+├── assets/                 journals/, csl/, reference.docx, export-*.yaml
+├── export/                 build output (gitignored)
+└── build.sh / build.ps1
+```
+
+Numeric prefixes are for sorting only — chapter order comes from `input-files:`
+in `assets/export-common.yaml`.
+
+### Built-in journals
+
+`est` (ACS) · `wr` (Elsevier) · `jhm` · `cej` (Elsevier) · `nature`
+
+```bash
+bash build.sh jhm      # switching journals never touches the manuscript
+```
+
+Add your own:
+
+```bash
+cd _template
+bash tools/add-journal.sh chemosphere ~/Downloads/chemosphere.csl
+```
+
+CSL files from <https://www.zotero.org/styles>.
+
+### Requirements
+
+- **Pandoc** ≥ 3.x — macOS `brew install pandoc`, Windows `winget install JohnMacFarlane.Pandoc`
+- **Git**
+- A Markdown editor (MarkText, Typora, Obsidian…)
+- Optional: GitHub Desktop for a visual commit UI
+- **No local LaTeX needed** — `.tex` is compiled by TeXPage
+
+### Tested on
+
+macOS 26 / Pandoc 3.13 / Git 2.50, end to end (build, journal switching, config sync).
+The PowerShell scripts and Windows path handling have **not** been executed on Windows —
+treat them as expected-to-work, and please open an issue if they don't.
+
+### Documentation
+
+All documentation is in Chinese, since the target users are Chinese researchers.
+
+| File | Contents |
+|---|---|
+| `template/怎么用.md` | Three-step onboarding |
+| `template/改配置手册.md` | Add journals, change fonts, change chapters, undo mistakes |
+| `template/CHEATSHEET.md` | Git command cheat sheet |
+| `bootstrap-prompt.md` | A prompt to hand to an AI so it rebuilds this setup from scratch |
+
+### License
+
+Scripts and docs: MIT. CSL styles: CC BY-SA 3.0 (see `NOTICE.md`).
+
+---
+
+## 中文
+
+一套给中文科研工作者准备的论文写作脚手架：MarkText 写 Markdown 初稿 → Pandoc 导出 LaTeX（送 TeXPage 排版）/ Word（交导师）→ Git 只管理初稿。**不需要本地装 LaTeX，不需要 Git LFS，不需要任何远程仓库。**
+
+### 它解决什么
 
 | 痛点 | 这套东西怎么处理 |
 |---|---|
@@ -21,9 +129,7 @@
 
 **它不做什么**：不帮你写论文，不做文献管理（用 Zotero），不做 PDF 排版（用 TeXPage / Word）。
 
----
-
-## 30 秒上手
+### 快速开始
 
 ```bash
 # 1. 把 template 复制到你的云盘，改名成 _template
@@ -44,34 +150,7 @@ Windows 用 `.\new-paper.ps1` 和 `.\build.ps1`。
 `git init -b main && git add -A && git commit -m "初稿: 初始化"`，
 然后 GitHub Desktop → `File` → `Add local repository`。
 
-### 可选：加两个跳转命令
-
-文档里会出现 `cdp paper-1` 这种写法。它是个 shell 函数，加一次就能用：
-
-```bash
-# 把下面几行追加到 ~/.zshrc（macOS）或 ~/.bashrc（Git Bash）
-cdp()  { cd "$HOME/OneDrive/$1" 2>/dev/null || { echo "没有这个仓库: $1"; cdpl; return 1; }; }
-cdpl() { for d in "$HOME/OneDrive"/*/; do [ -d "${d}.git" ] && basename "$d"; done; }
-```
-
-改完重开终端。`cdp paper-1` 进论文一，`cdpl` 列出所有仓库。
-
-不想加也没关系，把 `cdp paper-1` 换成 `cd ~/OneDrive/paper-1` 效果一样。
-
-### 依赖
-
-| 需要 | 装法 |
-|---|---|
-| Pandoc ≥ 3.x | macOS `brew install pandoc`；Windows `winget install JohnMacFarlane.Pandoc` |
-| Git | macOS `xcode-select --install`；Windows 装 Git for Windows |
-| 一个 Markdown 编辑器 | MarkText / Typora / Obsidian 均可 |
-| （可选）可视化 Git | GitHub Desktop，双平台界面一致 |
-
-**不需要**本地装 LaTeX——`.tex` 交给 TeXPage 编译。
-
----
-
-## 目录结构
+### 目录结构
 
 ```
 paper-1/                        ← 一篇论文 = 一个仓库
@@ -100,9 +179,7 @@ paper-1/                        ← 一篇论文 = 一个仓库
 **数字前缀只是排序用，不是章节号。** 论文里的章节顺序由 `assets/export-common.yaml`
 的 `input-files:` 列表决定，改顺序只改那里。
 
----
-
-## 内置期刊
+### 内置期刊
 
 | 简称 | 期刊 | 参考文献样式 |
 |---|---|---|
@@ -128,9 +205,7 @@ CSL 从 <https://www.zotero.org/styles> 下载。
 **不同期刊的章节差异**（EST 常不要 Highlights、Nature 的 Methods 放最后）需要手动调整，
 这部分脚本不代劳——它直接影响论文长什么样，改错了很难发现。
 
----
-
-## 踩过的坑（已经在配置里修好）
+### 踩过的坑（已经在配置里修好）
 
 如果你的 AI 或同事从零搭一套，这十条能省几个小时：
 
@@ -150,9 +225,7 @@ CSL 从 <https://www.zotero.org/styles> 下载。
 10. **不要 `git checkout <tag>` 之后提交**——游离 head 上的提交不属于任何分支，
     `git log --all` 都看不到，只能靠 `git reflog` 找回。
 
----
-
-## 双机与备份
+### 双机与备份
 
 - 仓库放在 OneDrive 里，`.git` 一起同步
 - **同一时间只在一台机器上写**
@@ -160,9 +233,7 @@ CSL 从 <https://www.zotero.org/styles> 下载。
 - 两个 OneDrive 同步根并存时，先确认哪个真的在同步（看客户端镜像里有没有那个文件夹）
 - **没有远程仓库 = 没有异地备份**，每周把整个文件夹（含 `.git`）复制一份到移动硬盘
 
----
-
-## 文档
+### 文档
 
 | 文件 | 内容 |
 |---|---|
@@ -171,9 +242,7 @@ CSL 从 <https://www.zotero.org/styles> 下载。
 | `template/CHEATSHEET.md` | Git 命令速查 |
 | `bootstrap-prompt.md` | 给 AI 的搭建提示词，可让别人快速复现 |
 
----
-
-## 许可
+### 许可
 
 - 本仓库的脚本与文档：MIT
 - `assets/csl/*.csl`：来自 [citation-style-language/styles](https://github.com/citation-style-language/styles)，
