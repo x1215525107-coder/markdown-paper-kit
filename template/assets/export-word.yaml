@@ -1,0 +1,4 @@
+to: docx
+output-file: export/paper.docx
+reference-doc: assets/reference.docx
+table-of-contents: false

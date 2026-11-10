@@ -1,0 +1,15 @@
+# Supporting Information：独立文档，只含 90-si.md
+# 不引用 export-common.yaml，避免把正文的 input-files 一起带进来
+from: markdown+east_asian_line_breaks
+input-files:
+  - manuscript/90-si.md
+metadata-files:
+  - assets/metadata.yaml
+resource-path:
+  - manuscript
+  - .
+to: docx
+output-file: export/si.docx
+reference-doc: assets/reference.docx
+number-sections: false
+wrap: none

@@ -1,0 +1,86 @@
+# 论文项目：内容、图片、文献、模板与构建配置入库。
+# 已跟踪文件不受新增 ignore 规则影响；例外规则须位于排除规则之后。
+
+# 自动生成目录
+/export/
+/build/
+/dist/
+/out/
+
+# 导出文件；模板与论文插图例外
+*.docx
+*.doc
+*.tex
+*.pdf
+*.html
+*.epub
+*.odt
+*.rtf
+!assets/reference.docx
+!assets/*.tex
+!manuscript/figures/**/*.pdf
+
+# LaTeX 中间文件
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.nav
+*.snm
+*.vrb
+*.idx
+*.ind
+*.ilg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.xdv
+
+# Office / 编辑器临时文件
+~$*.docx
+~$*.doc
+~$*.xlsx
+~$*.pptx
+.~lock.*#
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# 大型可编辑源文件：本方案放仓库外，需独立备份
+*.psd
+*.ai
+*.sketch
+*.fig
+*.opju
+*.opj
+*.pptx
+*.ppt
+
+# 系统文件
+.DS_Store
+._*
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+.fseventsd
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# 本机编辑器状态
+.vscode/
+.idea/
+.marktext/
+
+# 不忽略 *冲突*、*-副本*、*(1).md 等文件：它们可能包含待合并的工作。
+# Git 忽略规则不是备份规则；被忽略的原始素材也要另行保存。

@@ -1,0 +1,3 @@
+# Chemical Engineering Journal (Elsevier)
+# 样式库无专属 CSL，用 Elsevier 数字编号样式打底
+csl: assets/csl/elsevier-vancouver.csl

@@ -1,0 +1,34 @@
+# 文本入库和检出统一 LF；编辑器仍需使用 UTF-8。
+* text=auto eol=lf
+
+*.md            text eol=lf
+*.markdown      text eol=lf
+*.bib           text eol=lf
+*.yaml          text eol=lf
+*.yml           text eol=lf
+*.tex           text eol=lf
+*.sty           text eol=lf
+*.cls           text eol=lf
+*.svg           text eol=lf
+*.sh            text eol=lf
+*.ps1           text eol=lf
+.gitignore      text eol=lf
+.gitattributes  text eol=lf
+
+# binary = -text -diff -merge；不会禁止 Git 打包时的差量压缩。
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.bmp   binary
+*.tif   binary
+*.tiff  binary
+*.webp  binary
+*.pdf   binary
+*.eps   binary
+*.docx  binary
+*.doc   binary
+*.xlsx  binary
+*.pptx  binary
+*.zip   binary
+*.bundle binary

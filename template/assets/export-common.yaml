@@ -1,0 +1,25 @@
+# 正文公共配置。章节顺序只在这里改。
+# 注意：90-si.md 不在本列表里 —— Supporting Information 单独导出（见 export-si.yaml）
+from: markdown+east_asian_line_breaks
+input-files:
+  - manuscript/00-front.md
+  - manuscript/01-intro.md
+  - manuscript/02-methods.md
+  - manuscript/03-results.md
+  - manuscript/04-conclusion.md
+  - manuscript/05-backmatter.md
+metadata-files:
+  - assets/metadata.yaml
+resource-path:
+  - manuscript
+  - .
+file-scope: true
+bibliography: manuscript/refs.bib
+citeproc: true
+number-sections: true
+wrap: none
+fail-if-warnings: true
+# 参考文献样式：下载对应 CSL 放进 assets/，再取消下面一行的注释
+# EST          → american-chemical-society.csl
+# WR/JHM/CEJ   → 各期刊 CSL（Elsevier 系多为数字编号）
+# csl: assets/american-chemical-society.csl

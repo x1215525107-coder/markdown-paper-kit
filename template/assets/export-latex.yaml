@@ -1,0 +1,11 @@
+# 期刊论文用 article + section；不要用 ctexbook/chapter（那是学位论文的）
+to: latex
+output-file: export/paper.tex
+standalone: true
+top-level-division: section
+variables:
+  documentclass: article
+  fontsize: 12pt
+  geometry: margin=2.5cm
+include-in-header:
+  - assets/texpage-template.tex

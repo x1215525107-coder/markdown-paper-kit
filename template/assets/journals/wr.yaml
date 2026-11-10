@@ -1,0 +1,4 @@
+# Water Research (Elsevier)
+# 官方样式库里没有 water-research.csl，用 Elsevier 数字编号样式打底。
+# 若编辑部给了 .csl 或要求特定格式，替换下面这行的文件即可。
+csl: assets/csl/elsevier-vancouver.csl
