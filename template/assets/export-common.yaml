@@ -19,6 +19,9 @@ citeproc: true
 number-sections: true
 wrap: none
 fail-if-warnings: true
+# 参考文献列表的标题（不写的话 Word 里只有编号、没有标题）
+metadata:
+  reference-section-title: References
 # 参考文献样式：下载对应 CSL 放进 assets/，再取消下面一行的注释
 # EST          → american-chemical-society.csl
 # WR/JHM/CEJ   → 各期刊 CSL（Elsevier 系多为数字编号）
